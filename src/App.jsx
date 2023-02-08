@@ -5,6 +5,7 @@ import SelectCharacter from "./Components/SelectCharacter"
 import { CONTRACT_ADDRESS, transformCharacterData } from "./constants"
 import Arena from "./Components/Arena"
 import myEpicGame from "./utils/MyEpicGame.json"
+import LoadingIndicator from "./Components/LoadingIndicator"
 import "./App.css"
 
 const TWITTER_HANDLE = "_buildspace"
@@ -13,6 +14,15 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null)
   const [characterNFT, setCharacterNFT] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    /*
+     * Anytime our component mounts, make sure to immediately set our loading state
+     */
+    setIsLoading(true)
+    checkIfWalletIsConnected()
+  }, [])
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -35,6 +45,7 @@ const App = () => {
     } catch (error) {
       console.log(error)
     }
+    setIsLoading(false)
   }
 
   const connectWalletAction = async () => {
@@ -58,6 +69,9 @@ const App = () => {
   }
 
   const renderContent = () => {
+    if (isLoading) {
+      return <LoadingIndicator />
+    }
     if (!currentAccount) {
       return (
         <div className="connect-wallet-container">
@@ -86,10 +100,6 @@ const App = () => {
   }
 
   useEffect(() => {
-    checkIfWalletIsConnected()
-  }, [])
-
-  useEffect(() => {
     const fetchNFTMetadata = async () => {
       console.log("Checking for Character NFT on address:", currentAccount)
 
@@ -108,6 +118,17 @@ const App = () => {
       } else {
         console.log("No character NFT found")
       }
+
+      const characterNFT = await gameContract.checkIfUserHasNFT()
+      if (characterNFT.name) {
+        console.log("User has character NFT")
+        setCharacterNFT(transformCharacterData(characterNFT))
+      }
+
+      /*
+       * Once we are done with all the fetching, set loading state to false
+       */
+      setIsLoading(false)
     }
 
     if (currentAccount) {
