@@ -110,7 +110,7 @@ const SelectCharacter = ({ setCharacterNFT }) => {
           <p>{character.name}</p>
         </div>
         <img
-          src={character.imageURI}
+          src={`https://cloudflare-ipfs.com/ipfs/${character.imageURI}`}
           alt={character.name}
         />
         <button

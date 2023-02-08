@@ -141,7 +141,7 @@ const Arena = ({ characterNFT, setCharacterNFT, currentAccount }) => {
             <h2>🔥 {boss.name} 🔥</h2>
             <div className="image-content">
               <img
-                src={boss.imageURI}
+                src={`https://cloudflare-ipfs.com/ipfs/Qmas9t1h52rorVrvxisxwKwHwVh6PthfdsNPUmC9RbWtha`}
                 alt={`Boss ${boss.name}`}
               />
               <div className="health-bar">
@@ -179,7 +179,7 @@ const Arena = ({ characterNFT, setCharacterNFT, currentAccount }) => {
               <div className="image-content">
                 <h2>{characterNFT.name}</h2>
                 <img
-                  src={characterNFT.imageURI}
+                  src={`https://cloudflare-ipfs.com/ipfs/${characterNFT.imageURI}`}
                   alt={`Character ${characterNFT.name}`}
                 />
                 <div className="health-bar">
